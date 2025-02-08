@@ -1,13 +1,32 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+}
+// Load local.properties file
+// Load the local.properties file and retrieve the API key
+
+
+// Load local.properties file and read the API key
+val localProperties = rootProject.file("local.properties")
+val mapsApiKey = if (localProperties.exists()) {
+    Properties().apply {
+        load(localProperties.inputStream())
+    }.getProperty("MAPS_API_KEY") ?: ""
+} else {
+    ""
 }
 
 android {
     namespace = "com.example.healthify"
-    compileSdk = 34
+    compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         applicationId = "com.example.healthify"
         minSdk = 24
@@ -16,7 +35,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String" , "MAPS_API_KEY" , "")
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
 
     buildTypes {
@@ -39,68 +58,72 @@ android {
 
 dependencies {
 
-    dependencies {
         implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10") // Updated to latest Kotlin version
-        implementation("androidx.appcompat:appcompat:1.7.0") // Updated AppCompat
-        implementation("androidx.core:core-ktx:1.10.1") // Updated Core KTX
-        implementation("androidx.constraintlayout:constraintlayout:2.1.4") // Updated ConstraintLayout
-        testImplementation("junit:junit:4.13.2") // Updated JUnit
-        androidTestImplementation("androidx.test.ext:junit:1.1.5") // Updated AndroidX Test JUnit
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // Updated Espresso Core
+        implementation(libs.kotlin.stdlib.jdk7) // Updated to latest Kotlin version
+        implementation(libs.androidx.appcompat) // Updated AppCompat
+        implementation(libs.androidx.core.ktx.v1101) // Updated Core KTX
+        implementation(libs.androidx.constraintlayout.v214) // Updated ConstraintLayout
+        testImplementation(libs.junit) // Updated JUnit
+        androidTestImplementation(libs.androidx.junit.v115) // Updated AndroidX Test JUnit
+        androidTestImplementation(libs.androidx.espresso.core.v351) // Updated Espresso Core
 
 // Material Design
-        implementation("com.google.android.material:material:1.9.0") // Updated Material Design
+        implementation(libs.material.v190) // Updated Material Design
 
 // Architectural Components
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Updated Lifecycle ViewModel KTX
+        implementation(libs.androidx.lifecycle.viewmodel.ktx) // Updated Lifecycle ViewModel KTX
 
 // Room
-        implementation("androidx.room:room-runtime:2.6.0") // Updated Room Runtime
-        kapt("androidx.room:room-compiler:2.6.0") // Updated Room Compiler
+
+    implementation(libs.androidx.room.runtime)  // Latest version of Room
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.ktx)
 
 // Kotlin Extensions and Coroutines support for Room
-        implementation("androidx.room:room-ktx:2.6.0") // Updated Room KTX
+        implementation(libs.androidx.room.ktx) // Updated Room KTX
 
 // Coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2") // Updated Coroutines Core
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2") // Updated Coroutines Android
+        implementation(libs.kotlinx.coroutines.core) // Updated Coroutines Core
+        implementation(libs.kotlinx.coroutines.android) // Updated Coroutines Android
 
 // Coroutine Lifecycle Scopes
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Updated Lifecycle ViewModel KTX
-        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1") // Updated Lifecycle Runtime KTX
+        implementation(libs.androidx.lifecycle.viewmodel.ktx.v261) // Updated Lifecycle ViewModel KTX
+        implementation(libs.androidx.lifecycle.runtime.ktx) // Updated Lifecycle Runtime KTX
+
 
 // Navigation Components
-        implementation("androidx.navigation:navigation-fragment-ktx:2.7.1") // Updated Navigation Fragment KTX
-        implementation("androidx.navigation:navigation-ui-ktx:2.7.1") // Updated Navigation UI KTX
+        implementation(libs.androidx.navigation.fragment.ktx) // Updated Navigation Fragment KTX
+        implementation(libs.androidx.navigation.ui.ktx) // Updated Navigation UI KTX
 
 // Glide
-        implementation("com.github.bumptech.glide:glide:4.15.0") // Updated Glide
-        kapt("com.github.bumptech.glide:compiler:4.15.0") // Updated Glide Compiler
+        implementation(libs.glide) // Updated Glide
+        kapt(libs.compiler) // Updated Glide Compiler
 
 // Google Maps Location Services
-        implementation("com.google.android.gms:play-services-location:21.0.1") // Updated Play Services Location
-        implementation("com.google.android.gms:play-services-maps:18.1.0") // Updated Play Services Maps
+        implementation(libs.play.services.location) // Updated Play Services Location
+        implementation(libs.play.services.maps) // Updated Play Services Maps
 
 // Dagger Core
-        implementation("com.google.dagger:dagger:2.48") // Updated Dagger Core
-        kapt("com.google.dagger:dagger-compiler:2.48") // Updated Dagger Compiler
+        implementation(libs.dagger) // Updated Dagger Core
+        kapt(libs.dagger.compiler) // Updated Dagger Compiler
 
 // Dagger Android
-        api("com.google.dagger:dagger-android:2.48") // Updated Dagger Android
-        api("com.google.dagger:dagger-android-support:2.4") // Updated Dagger Android Support
-        kapt("com.google.dagger:dagger-android-processor:2.48") // Updated Dagger Android Processor
+        api(libs.dagger.android) // Updated Dagger Android
+        api(libs.dagger.android.support) // Updated Dagger Android Support
+        kapt(libs.dagger.android.processor) // Updated Dagger Android Processor
+
+        implementation(libs.hilt.android)
+        kapt(libs.hilt.android.compiler)
 
 // Easy Permissions
-        implementation("pub.devrel:easypermissions:3.0.0") // Latest version as of now
+        implementation(libs.easypermissions) // Latest version as of now
 
 // Timber
-        implementation("com.jakewharton.timber:timber:5.0.1") // Updated Timber
+        implementation(libs.timber) // Updated Timber
 
 // MPAndroidChart
-        implementation("com.github.PhilJay:MPAndroidChart:v3.1.0") // Latest version as of now
+        implementation(libs.mpandroidchart) // Latest version as of now
 
-        implementation("androidx.lifecycle:lifecycle-extensions:2.2.0") // Note: lifecycle-extensions is deprecated
+        implementation(libs.androidx.lifecycle.extensions) // Note: lifecycle-extensions is deprecated
     }
 
-}
