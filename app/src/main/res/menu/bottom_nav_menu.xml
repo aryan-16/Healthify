@@ -5,6 +5,7 @@
     <item
         android:id="@+id/runFragment"
         android:title="Your Runs"
+
         android:icon="@drawable/ic_run"/>
 
     <item
