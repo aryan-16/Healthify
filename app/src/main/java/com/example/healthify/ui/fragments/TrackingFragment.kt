@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.example.healthify.other.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.healthify.other.Constants.MAPS_ZOOM
 import com.example.healthify.other.Constants.POLYLINE_COLOR
 import com.example.healthify.other.Constants.POLYLINE_WIDTH
+import com.example.healthify.other.TrackingUtility
 import com.example.healthify.services.Polyline
 import com.example.healthify.services.TrackingService
 import com.example.healthify.ui.viewModels.MainViewModel
@@ -37,6 +39,8 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var mapView: MapView? = null
     private lateinit var btnToggle: Button
     private lateinit var btnFinish: Button
+    private lateinit var tvTimer: TextView
+    private var currentTimeMillis  = 0L
 
     private var isTracking: Boolean = false
     private var pathPoints = mutableListOf<Polyline>()
@@ -46,6 +50,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
         btnToggle = view.findViewById(R.id.btnToggleRun)
         btnFinish = view.findViewById(R.id.btnFinishRun)
+        tvTimer = view.findViewById(R.id.tvTimer)
+
+        //
         btnToggle.setOnClickListener {
             checkAndRequestNotificationPermission()
             toggleRun()
@@ -102,6 +109,12 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             addLatestPolyline()
             moveCameraToUser()
             addStartEndMarkers() // ✅ Update markers on path change
+        })
+
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner , Observer {
+            currentTimeMillis = it
+            val formattedTime = TrackingUtility.getFormattedStopWatchTime(currentTimeMillis , true)
+            tvTimer.text = formattedTime
         })
     }
 
