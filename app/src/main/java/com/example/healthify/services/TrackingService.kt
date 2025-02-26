@@ -114,7 +114,6 @@ class TrackingService : LifecycleService() {
                 }
 
                 ACTION_STOP_SERVICE -> {
-                    Timber.d("Stopping service")
                     killService()
                 }
             }
