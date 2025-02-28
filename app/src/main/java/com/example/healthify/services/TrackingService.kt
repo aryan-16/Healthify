@@ -130,7 +130,7 @@ class TrackingService : LifecycleService() {
     private fun startTimer() {
         addEmptyPolyline()
         isTracking.postValue(true)
-        timeStarted = System.currentTimeMillis() // Set start time
+        timeStarted = System.currentTimeMillis()
         isTimerEnabled = true
 
         CoroutineScope(Dispatchers.Main).launch {
