@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.healthify.R
+import com.example.healthify.db.Run
 import com.example.healthify.other.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthify.other.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.healthify.other.Constants.ACTION_STOP_SERVICE
@@ -36,10 +38,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.round
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
@@ -51,6 +56,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private lateinit var btnFinish: Button
     private lateinit var tvTimer: TextView
     private var currentTimeMillis  = 0L
+    private var weight = 80f
 
     private var menu : Menu? = null
     private var isTracking: Boolean = false
@@ -76,6 +82,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         btnToggle.setOnClickListener {
             checkAndRequestNotificationPermission()
             toggleRun()
+        }
+        btnFinish.setOnClickListener {
+            zoomToSeeWholeTrack()
+            endRunAndSaveToDb()
         }
 
         mapView = view.findViewById(R.id.mapView)
@@ -138,6 +148,48 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         })
     }
 
+  // to zoom to see the run , we have a functionality provided by google maps
+    private fun zoomToSeeWholeTrack(){
+        val bounds = LatLngBounds.builder()
+      for(polyline in pathPoints){
+          for(pos in polyline){
+              bounds.include(pos)
+          }
+      }
+
+      mapView?.let {
+          CameraUpdateFactory.newLatLngBounds(
+              bounds.build(),
+              it.width,
+              it.height,
+              (mapView!!.height *0.05f).toInt()
+          )
+      }?.let {
+          map?.moveCamera(
+              it
+          )
+      }
+    }
+
+    private fun endRunAndSaveToDb(){
+        map?.snapshot {bmp->
+        var distanceInMeters  = 0
+            for(polyline in pathPoints){
+                distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
+            }
+            val avgSpeed = round((distanceInMeters/1000f) / (currentTimeMillis /1000f/60/60)*10)/10f
+            val dateTimeStamp = Calendar.getInstance().timeInMillis
+            val caloriesBurned = ((distanceInMeters/1000f)*weight).toInt()
+            val run = Run(bmp , dateTimeStamp , avgSpeed , distanceInMeters , currentTimeMillis , caloriesBurned)
+            viewModel.insertRun(run)
+            Snackbar.make(
+                requireActivity().findViewById(R.id.rootView),
+                "Run saved successfully",
+                Snackbar.LENGTH_LONG
+            ).show()
+            stopRun()
+        }
+    }
     private fun toggleRun() {
 
         if (isTracking) {
