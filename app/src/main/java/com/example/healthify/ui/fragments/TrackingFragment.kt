@@ -137,6 +137,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         TrackingService.pathPoints.observe(viewLifecycleOwner, Observer {
             pathPoints = it
             addLatestPolyline()
+            //hi
             moveCameraToUser()
             addStartEndMarkers() // ✅ Update markers on path change
         })
