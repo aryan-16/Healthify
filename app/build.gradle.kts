@@ -26,6 +26,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
     defaultConfig {
         applicationId = "com.example.healthify"
@@ -37,6 +38,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
+
 
     buildTypes {
         release {
