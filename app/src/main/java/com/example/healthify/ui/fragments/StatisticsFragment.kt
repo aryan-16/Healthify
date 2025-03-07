@@ -25,8 +25,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         super.onViewCreated(view, savedInstanceState)
         tvTotalTime = view.findViewById(R.id.tvTotalTime)
         tvTotalDistance = view.findViewById(R.id.tvTotalDistance)
-        tvTotalAvgSpeed = view.findViewById(R.id.tvAvgSpeed)
-        tvTotalCaloriesBurned = view.findViewById(R.id.tvCalories)
+        tvTotalAvgSpeed = view.findViewById(R.id.tvAverageSpeed)
+        tvTotalCaloriesBurned = view.findViewById(R.id.tvTotalCalories)
 
         subscribeToObservers()
 
