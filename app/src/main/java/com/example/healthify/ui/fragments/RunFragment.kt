@@ -59,7 +59,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
+
             }
 
         }
