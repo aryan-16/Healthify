@@ -63,7 +63,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
             }
 
         }
-        // Observe ViewModel Data
+        // Observe ViewModel Data here
         viewModel.runs.observe(viewLifecycleOwner, Observer {
             runAdapter.submitList(it)
         })
