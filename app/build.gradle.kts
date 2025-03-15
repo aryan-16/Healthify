@@ -68,6 +68,7 @@ dependencies {
         testImplementation(libs.junit) // Updated JUnit
         androidTestImplementation(libs.androidx.junit.v115) // Updated AndroidX Test JUnit
         androidTestImplementation(libs.androidx.espresso.core.v351) // Updated Espresso Core
+        implementation(libs.androidx.core.splashscreen)
 
 // Material Design
         implementation(libs.material.v190) // Updated Material Design
