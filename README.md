@@ -22,6 +22,9 @@ Healthify is a fitness tracking application built using **Kotlin** and **XML**, 
 
 ## Screenshots
 
+### Flowchart of app
+![Flowchart](HEALTHIFY-FLOWCHART.png)
+
 ### Running Tracker Screen
 ![Running Tracker Screen](ss1.png)
 
