@@ -5,8 +5,4 @@
 
     <style name="Theme.Healthify" parent="Base.Theme.Healthify" />
 
-    <Style name = "Theme.App.SplashScreen" parent ="Theme.SplashScreen">
-        <item name = "windowSplashScreenBackground">@color/ripple_color</item>
-
-    </Style>
 </resources>

@@ -49,10 +49,11 @@ class MainActivity : AppCompatActivity() {
         navigateToTrackingFragmentIfNeeded(intent)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        navigateToTrackingFragmentIfNeeded(intent)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent) // Call super method
+        navigateToTrackingFragmentIfNeeded(intent) // Handle intent
     }
+
 
     private fun navigateToTrackingFragmentIfNeeded(intent: Intent?) {
         if (intent?.action == ACTION_SHOW_TRACKING_FRAGMENT && this::navController.isInitialized) {

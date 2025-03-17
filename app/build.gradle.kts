@@ -64,7 +64,8 @@ dependencies {
         implementation(libs.kotlin.stdlib.jdk7) // Updated to latest Kotlin version
         implementation(libs.androidx.appcompat) // Updated AppCompat
         implementation(libs.androidx.core.ktx.v1101) // Updated Core KTX
-        implementation(libs.androidx.constraintlayout.v214) // Updated ConstraintLayout
+        implementation(libs.androidx.constraintlayout.v214)
+    implementation(libs.androidx.activity) // Updated ConstraintLayout
         testImplementation(libs.junit) // Updated JUnit
         androidTestImplementation(libs.androidx.junit.v115) // Updated AndroidX Test JUnit
         androidTestImplementation(libs.androidx.espresso.core.v351) // Updated Espresso Core
