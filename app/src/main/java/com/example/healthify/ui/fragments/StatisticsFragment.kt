@@ -110,7 +110,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 val allAvgSpeeds = it.indices.map{i-> BarEntry(i.toFloat() , it[i].avgSpeedInKMH)}
                 val bardataset = BarDataSet(allAvgSpeeds , "Avg Speed Over Time").apply {
                     valueTextColor = Color.BLUE
-                    color =   ContextCompat.getColor(requireContext() , R.color.colorAccent)
+                    color =   ContextCompat.getColor(requireContext() , R.color.md_blue_50)
                 }
                 barChart.data = BarData(bardataset)
                 barChart.marker = CustomMarkerView(it.reversed() , requireContext() , R.layout.marker_view)
