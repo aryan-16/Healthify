@@ -19,39 +19,43 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule{
+object AppModule {
 
     @Singleton
     @Provides
-    fun provideRunningDatabase(
-        @ApplicationContext app : Context
-    ) = Room.databaseBuilder(
-        app,
-        RunningDatabase::class.java,
-        RUNNING_DATABASE_NAME
-    ).build()
+    fun provideRunningDatabase(@ApplicationContext app: Context): RunningDatabase =
+        Room.databaseBuilder(
+            app,
+            RunningDatabase::class.java,
+            RUNNING_DATABASE_NAME
+        ).fallbackToDestructiveMigration()
+            .build()
 
     @Singleton
     @Provides
-    fun provideRunDao(db : RunningDatabase) = db.getRunDao()
+    fun provideRunDao(db: RunningDatabase) = db.getRunDao()
 
     @Singleton
     @Provides
-    fun provideSharedPreferences(@ApplicationContext app: Context) =
-        app.getSharedPreferences(SHARED_PREFERENCES_NAME , MODE_PRIVATE)
-
+    fun provideStepDao(db: RunningDatabase) = db.getStepDao()
 
     @Singleton
     @Provides
-    fun provideName(sharedPref : SharedPreferences) = sharedPref.getString(KEY_NAME , "")?:""
+    fun provideSharedPreferences(@ApplicationContext app: Context): SharedPreferences =
+        app.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
 
     @Singleton
     @Provides
-    fun provideWeight(sharedPref : SharedPreferences) = sharedPref.getFloat(KEY_WEIGHT , 80f)
+    fun provideName(sharedPref: SharedPreferences): String =
+        sharedPref.getString(KEY_NAME, "") ?: ""
 
     @Singleton
     @Provides
-    fun provideFirstTimeToggle(sharedPref : SharedPreferences) = sharedPref.getBoolean(
-        KEY_FIRST_TIME_TOGGLE , true)
+    fun provideWeight(sharedPref: SharedPreferences): Float =
+        sharedPref.getFloat(KEY_WEIGHT, 80f)
 
+    @Singleton
+    @Provides
+    fun provideFirstTimeToggle(sharedPref: SharedPreferences): Boolean =
+        sharedPref.getBoolean(KEY_FIRST_TIME_TOGGLE, true)
 }

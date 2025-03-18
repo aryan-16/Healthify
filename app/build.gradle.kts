@@ -128,6 +128,9 @@ dependencies {
 // MPAndroidChart
         implementation(libs.mpandroidchart) // Latest version as of now
 
+    // google play services fitness
+    implementation(libs.play.services.fitness)
+
         implementation(libs.androidx.lifecycle.extensions) // Note: lifecycle-extensions is deprecated
     }
 

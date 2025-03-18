@@ -13,6 +13,9 @@
         android:title="Statistics"
         android:icon="@drawable/ic_graph"/>
 
+    <item android:id="@+id/stepcounterFragment"
+        android:title="Step Counter"
+        android:icon="@drawable/ic_step_counter"/>
     <item
         android:id="@+id/settingsFragment"
         android:title="Settings"

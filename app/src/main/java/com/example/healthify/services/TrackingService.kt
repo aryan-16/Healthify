@@ -172,6 +172,7 @@ class TrackingService : LifecycleService() {
         stopSelf()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun updateNotificationTrackingState(isTracking: Boolean){
         val notificationActionText = if(isTracking) "Pause" else "Resume"
 

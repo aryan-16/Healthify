@@ -27,6 +27,10 @@
             android:id="@+id/action_setupFragment_to_runFragment"
             app:destination="@id/runFragment" />
     </fragment>
+
+    <fragment android:id="@+id/stepcounterFragment"
+        android:name="com.example.healthify.ui.fragments.StepStatisticsFragment"
+        android:label="StepStatisticsFragment"/>
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.healthify.ui.fragments.StatisticsFragment"
